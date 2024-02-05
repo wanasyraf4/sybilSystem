@@ -1,4 +1,4 @@
-import dash
+
 import dash_daq as daq
 from dash.dependencies import Input, Output
 import pages.overview, pages.datahub, pages.home  # Ensure pages.home is imported
@@ -9,7 +9,7 @@ from dash import Dash
 # from myapp import app
 from urllib.request import urlopen
 from dash import  Dash, html, dcc, Input, Output, callback
-app = dash.Dash(__name__, suppress_callback_exceptions=True)
+app = Dash(__name__, suppress_callback_exceptions=True)
 server = app.server 
 
 app.layout = html.Div([
