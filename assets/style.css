@@ -1,0 +1,218 @@
+/* ========== variable sizing ========== */
+/* Styles for screens larger than 600px wide */
+@media (min-width: 600px) {
+    .card-container {
+      flex-basis: 50%;
+    }
+  
+    .map-container {
+      flex-basis: 50%;
+    }
+  }
+  
+  /* Styles for screens smaller than 600px wide */
+  @media (max-width: 599px) {
+    .dashboard-container {
+      flex-direction: column; /* Stack elements vertically on small screens */
+    }
+  
+    .card-container, .map-container {
+      flex-basis: 100%; /* Each element takes full width on small screens */
+      margin-bottom: 1rem; /* Add some space between the cards and the map */
+    }
+  }
+
+/* Top bar styling */
+.topbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3rem;
+    padding: 0.5rem 1rem;
+    background-color: #f8f9fa;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,.2);
+    z-index: 1000; /* Ensures the bar stays on top */
+}
+
+/* Adjustments for main content area */
+.content {
+    margin-top: 4rem; /* Adjust this value to match the top bar height */
+    padding: 2rem;
+}
+
+/* Style for the topbar links */
+.link-button {
+    margin: 0 1rem; /* Adjust spacing around links */
+    padding: 0.5rem 1rem;
+    background-color: #007BFF;  /* Example background color */
+    color: white;  /* Text color */
+    text-align: center;
+    border-radius: 20px;  /* Makes the corners rounded */
+    transition: background-color 0.3s;
+    text-decoration: none; /* Removes underline from links */
+}
+
+.link-button:hover {
+    background-color: #0056b3;  /* Darker background color on hover */
+    color: white;  /* Text color remains the same on hover */
+}
+
+/* General Page Styling for Dark Mode */
+body {
+    background-color: #121212; /* Dark background for the entire page */
+    color: #ffffff; /* Light text color for better readability */
+    font-family: Arial, sans-serif; /* Optional: Define a consistent font */
+}
+
+/* Top bar styling for Dark Mode */
+.topbar {
+    display: flex;   /* This property aligns children elements in a row */
+    align-items: center;
+    background-color: #1f1f1f; /* Darker shade for the top bar */
+    color: #ffffff; /* Light color for text */
+    /* ... other styles remain the same ... */
+}
+
+/* Adjustments for main content area in Dark Mode */
+.content {
+    background-color: #121212; /* Dark background for content to match the general theme */
+    color: #ffffff; /* Light text color for readability */
+    /* ... other styles remain the same ... */
+}
+
+/* Style for the topbar links in Dark Mode */
+.link-button {
+    background-color: #007BFF; /* Adjust if you want a different color for buttons */
+    color: #ffffff; /* Light text color for buttons */
+    /* ... other styles remain the same ... */
+}
+
+.link-button:hover {
+    background-color: #0056b3; /* Darker shade on hover */
+    color: #ffffff; /* Text color remains the same on hover */
+    /* ... other styles remain the same ... */
+}
+
+/* ========= Page title */
+.page-title {
+    margin-bottom: 1rem; /* Spacing between title and cards */
+    color: #ffffff; /* Adjust color for dark mode if needed */
+    /* Other styling as needed */
+}
+
+.overview-title {
+    text-align: center; /* Center the text horizontally */
+    background-color: #333; /* Dark background */
+    color: #fff; /* White text */
+    padding: 1rem 0; /* Padding above and below the text */
+    width: 100%; /* Ensure it takes full width */
+    box-sizing: border-box; /* Padding and border are included in the width */
+    margin-top: 4.5rem; /* Space from the top bar */
+    margin-bottom: 1rem; /* Space above the cards */
+    font-size: 1.5rem; /* Larger font size */
+    font-weight: bold; /* Bold font weight */
+}
+
+/* ============== card container 
+/* Card title styling */
+.card-title {
+    font-size: 1.25rem; /* Larger font size for the title */
+    color: #333333; /* Dark color for text */
+    margin-bottom: 0.5rem; /* Space between title and value */
+}
+
+/* Card value styling */
+.card-value {
+    font-size: 2rem; /* Large font size for the value */
+    font-weight: bold; /* Make the value bold */
+    color: #007BFF; /* Color for the value, can adjust */
+}
+
+/* Card container styling */
+.card-container {
+    display: flex; /* Aligns children (cards) in a row */
+    gap: 1rem; /* Space between cards */
+    flex-wrap: wrap; /* If cards don't fit in one row, they wrap to the next */
+    flex-basis: 50%; /* Adjust the width of card container */
+}
+
+.card {
+
+    display: flex;
+    flex-direction: column; /* Stack children vertically */
+    align-items: left; /* Center children horizontally */
+    justify-content: center; /* Center children vertically */
+    text-align: center; /* Center text alignment for all text within */
+    
+    margin-bottom: 1rem; 
+    box-sizing: border-box; /* Include padding and border in the element's total width */
+    width: calc(23% - 0.5rem); /* Adjust the width as necessary, considering the gap */
+    height: 100px; /* Example fixed height, adjust based on your content */
+    border: 1px solid #e1e1e1;
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.card:nth-child(2) {
+    margin-right: 0; /* Resets the right margin for the second card in a row */
+    margin-bottom: 2rem; /* Extra space below the second card to separate the rows */
+}
+
+
+/* ============ Dashboard container */
+
+.dashboard-container {
+    display: flex;
+    align-items: stretch;
+    flex-direction: column;
+    align-items: center; /* Center children horizontally */
+    width: 100%; /* Take full width */
+}
+
+
+/* ============ map container */
+
+
+/* Map container styling */
+.map-container {
+    flex-basis: 50%; /* Adjust the width of map container */
+    height: calc(2 * (100px + 1rem)); /* Adjust based on the card's height and margin, e.g., 2 cards */
+    /* Optional: Add some padding or margin if needed */
+    width: calc(50% - 0.5rem); /* Adjust the width as necessary, considering the gap */
+}
+
+/* ============ bar container */
+
+
+/* bar container styling */
+.bar-container {
+    flex-basis: 50%; /* Adjust the width of bar container */
+    height: calc(2 * (100px + 1rem)); /* Adjust based on the bar's height and margin, e.g., 2 bar */
+    /* Optional: Add some padding or margin if needed */
+    width: calc(50% - 0.5rem); /* Adjust the width as necessary, considering the gap */
+}
+
+/*  ====== gauge container */
+.gauge {
+    margin: 0 10px; /* Add some space between the gauges */
+    /* Additional styles for individual gauges if needed */
+}
+
+.gauge-container {
+    display: flex; /* Use flexbox to align children */
+    justify-content: center; /* Center gauges in the container */
+    align-items: center; /* Align gauges vertically */
+    width: calc(45% - 0.5rem);
+}
+
+.gauge-title {
+    /*font-size: 1.25rem; /* Larger font size for the title */
+    color: #e1e1e1; /* Dark color for text */
+    margin-bottom: 0.5rem; /* Space between title and value */
+}
