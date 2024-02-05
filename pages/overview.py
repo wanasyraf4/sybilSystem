@@ -36,8 +36,8 @@ def update_graph(n_intervals):
         'data': [trace],
         'layout': go.Layout(
             xaxis=dict(title='Time'),
-            yaxis=dict(range=[24300, 27934], title='Value'),
-            title='Total Transaction Summary',
+            yaxis=dict(range=[22300, 25934], title='Value'),
+            title='Anomaly Detection',
             #height=300  # Set the height you want here
         )
     }
@@ -66,9 +66,20 @@ with urlopen('https://raw.githubusercontent.com/plotly/datasets/master/geojson-c
 
 # Example DataFrame with data
 df = pd.DataFrame({
-    "fips": ["01001", "01003", "01005"],
-    "fraud_percentage": [0.1, 0.2, 0.05],
+    "fips": [
+        "01001", "01003", "01005", "06045",
+        "41001", "36085", "06075", "42053",
+        "12053", "48201", "13135", "06087",
+        "41085", "08009", "25025", "06065",
+        "36061", "60029", "53069", "48495"
+    ],
+    "fraud_percentage": [
+        0.1, 0.2, 0.05, 0.62, 0.31, 0.54, 0.63, 0.67,
+        0.77, 0.24, 0.87, 0.98, 0.62, 0.54, 0.36, 0.82,
+        0.52, 0.4, 0.9, 0.88
+    ]
 })
+
 
 # Create the Plotly figure
 figMap = px.choropleth(df, geojson=counties, locations='fips', color='fraud_percentage',
@@ -137,12 +148,31 @@ figBar.update_layout(
     )
 )
 
-# Overview page layout
+## donut chart
+
+case = np.array(['fraud_loss', 'fraud_without_loss','unclassified', 'default entry','not_fraud'])
+case_num = np.array([3,8,2,7,153])
+
+figDonut = px.pie(
+    names=case,
+    values=case_num,
+    hole=0.3,  # Adjust the size of the hole to turn the pie chart into a donut chart
+    title="Case Distribution"
+)
+
+figDonut.update_traces(textinfo='percent+label')  # Display percentage and label on the chart
+figDonut.update_layout(
+    paper_bgcolor='#121212',  # Background color of the outer area of the figure
+    plot_bgcolor='#121212',  # Background color of the plotting area
+    font_color='white'  # Update the font color for better contrast with the dark background
+)
+
+# #######  Overview page layout  #############
 layout = html.Div([
     html.Div('Overview Page', className='overview-title'),
 
     dcc.Graph(id='live-update-graph-overview',
-              style={'height': '300px'},),
+              style={'height': '350px'},),
     dcc.Interval(
         id='interval-component-overview',
         interval=1*1000,  # in milliseconds
@@ -153,8 +183,10 @@ layout = html.Div([
     daq.Gauge(
         id='my-gauge-1',
         className='gauge-title',
-        label="Default",
-        value=6,
+        label="% Success",
+        min=0,  # Set the minimum value of the gauge scale
+        max=100,
+        value=89,
         style={'width': '30%', 'display': 'inline-block'}  # Adjust the width as necessary
     
     ),
@@ -162,8 +194,10 @@ layout = html.Div([
     daq.Gauge(
         id='my-gauge-2',
         className='gauge-title',
-        label="Default",
-        value=6,
+        label="% Alert",
+        min=0,  # Set the minimum value of the gauge scale
+        max=100,
+        value=8,
         style={'width': '30%', 'display': 'inline-block'}  # Adjust the width as necessary
     
     ),
@@ -171,8 +205,10 @@ layout = html.Div([
     daq.Gauge(
         id='my-gauge-3',
         className='gauge-title',
-        label="Default",
-        value=6,
+        label="% Declined",
+        min=0,  # Set the minimum value of the gauge scale
+        max=100,
+        value=3,
         style={'width': '30%', 'display': 'inline-block'}  # Adjust the width as necessary
     
     ),
@@ -197,7 +233,7 @@ layout = html.Div([
          # First row of cards
          html.Div([
              html.Div('Profile Analysed', className='card-title'),
-             html.Div('10k', className='card-value')
+             html.Div('153k', className='card-value')
          ], className='card'),
          html.Div([
              html.Div('Suspicious Transaction', className='card-title'),
@@ -232,6 +268,10 @@ layout = html.Div([
     html.Div(style={'height': '150px'}), 
     
     html.Div('Fraudulent Case Breakdown', className='overview-title'),
+    html.Div([  # Bar container
+        dcc.Graph(figure=figDonut)
+    ], className='Donut-container'),
+    
     ##
     
     # html.Div([  # Bar container

@@ -11,7 +11,7 @@ WINDOW_SIZE = 20  # Define the window size here
 
 # Layout of the page
 layout = html.Div([
-    html.H1('Home Page'),
+    html.H1('Descriptive Analysis'),
     dcc.Graph(id='live-update-graph-home'),
     dcc.Interval(
         id='interval-component-home',
@@ -39,7 +39,7 @@ def update_graph(n_intervals):
     return {'data': [trace], 'layout': go.Layout(
         xaxis=dict(title='Time', range=[min(times), max(times)]),
         yaxis=dict(range=[min_val, max_val], title='Value'),
-        title='Predictive Data Streaming'
+        title='Real Time Data Streaming'
     )}
 
 # Function to register callbacks
