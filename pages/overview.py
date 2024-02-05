@@ -16,7 +16,7 @@ from datetime import datetime, timedelta
 
 # Function to update the graph
 def update_graph(n_intervals):
-    now = datetime.now() + timedelta(hours=8)
+    now = datetime.now() + timedelta(hours=16)
 
     # Append new time and value
     x_values.append(now)

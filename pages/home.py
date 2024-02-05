@@ -5,9 +5,28 @@ from dash import dcc, html
 import plotly.graph_objs as go
 import random
 from datetime import datetime, timedelta
+from dash import dash_table
+import pandas as pd
+
 
 # Constants
 WINDOW_SIZE = 20  # Define the window size here
+
+# Data in array form
+analyst = ['Bernard Dixon', 'Carolyn Gilbert', 'Catherine Watkins', 'Courtney Richardson', 'Daryl Hopkins']
+viewed = [105, 65, 64, 45, 170]
+dismissed = [0, 0, 0, 0, 0]
+open_case = [42, 12, 1, 1, 14]
+closed_case = [32, 8, 1, 1, 13]
+
+figTable = go.Figure(data=[go.Table(
+    header=dict(values=['Analyst', 'Viewed', 'Dismissed', 'Open Case', 'Closed Case'],
+                fill_color='paleturquoise',
+                align='left'),
+    cells=dict(values=[analyst, viewed, dismissed, open_case, closed_case],
+               fill_color='lavender',
+               align='left'))
+])
 
 # Layout of the page
 layout = html.Div([
@@ -17,13 +36,22 @@ layout = html.Div([
         id='interval-component-home',
         interval=1*1000,  # in milliseconds
         n_intervals=0
-    )
+    ),
+    
+    html.Div('Risk and Remediation', className='overview-title'),
+    
+    
+    html.Div('Fraud Analyst Team', className='overview-title'),
+    html.H1('Fraud Analyst Team'),
+    dcc.Graph(figure=figTable)
+
+
 ])
 
 # Function to update the graph
 def update_graph(n_intervals):
     # Generate timestamps for each interval within the window
-    now = datetime.now() + timedelta(hours=8)
+    now = datetime.now() + timedelta(hours=16)
     times = [now - timedelta(seconds=i) for i in range(WINDOW_SIZE)][::-1]
 
     # Generate random values within a smaller range for less fluctuation
@@ -39,7 +67,7 @@ def update_graph(n_intervals):
     return {'data': [trace], 'layout': go.Layout(
         xaxis=dict(title='Time', range=[min(times), max(times)]),
         yaxis=dict(range=[min_val, max_val], title='Value'),
-        title='Real Time Data Streaming'
+        title='Real Time Total Transaction Data Stream'
     )}
 
 # Function to register callbacks

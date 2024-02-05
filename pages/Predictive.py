@@ -1,50 +1,59 @@
-from dash.dependencies import Input, Output
-from dash import dcc, html
-import plotly.graph_objs as go
-import random
-from datetime import datetime, timedelta
+import plotly.express as px
+import numpy as np
+from dash import html
+from dash import  Dash, html, dcc, Input, Output, callback
 
-# Constants
-WINDOW_SIZE = 20  # Define the window size here
+# Convert to numeric for sorting
+val2 = np.array([0.05, 0.03, 0.09, 0.04, 0.08, 0.07, 0.01, 0.02, 0.04, 0.06, 0.034])
+case2 = np.array(['misc_net', 'shopping_net', 'shopping_pos', 'grocery_net',
+                 'grocery_post', 'gas_transported', 'food_dining', 'home',
+                 'entertainment', 'personal_care', 'unknown'])
 
-# Layout of the page
+# Combine arrays into structured array for sorting
+combined = np.core.records.fromarrays([val2, case2], names='val,case')
+
+# Sort by 'val' in descending order
+sorted_combined = np.sort(combined, order='val')[::1]
+
+# Extract sorted arrays
+sorted_val2 = sorted_combined['val']
+sorted_case2 = sorted_combined['case']
+
+figPredBar = px.bar(x=sorted_val2, y=sorted_case2, orientation='h', color_discrete_sequence=['orange'] * len(sorted_val2))
+figPredBar.update_layout(
+    title='Predicted Fraud Case by Category',
+    xaxis_title='Fraud Percentage',
+    yaxis_title='Fraud Category',
+    plot_bgcolor='rgba(0,0,0,0)',  # Optional: Set plot background color (adjust or remove as needed)
+    paper_bgcolor='rgba(0,0,0,0)',  # Optional: Set paper background color (adjust or remove as needed)
+     font=dict(
+        color='white'
+    ),
+    xaxis=dict(
+        title_font=dict(
+            color='white'
+        ),
+        tickfont=dict(
+            color='white'
+        )
+    ),
+    yaxis=dict(
+        title_font=dict(
+            color='white'
+        ),
+        tickfont=dict(
+            color='white'
+        )
+    )
+)
+# DataHub page layout
 layout = html.Div([
-    html.H1('Predictive Analysis'),
-    dcc.Graph(id='live-update-graph-predictive'),
-    dcc.Interval(
-        id='interval-component-predictive',
-        interval=1*1000,  # in milliseconds
-        n_intervals=0
-    )
+    html.H3('Predictive Analysis'),
+    # Add your DataHub page content here
+    html.Div([  # Bar container
+        dcc.Graph(figure=figPredBar)
+    ], className='PredBar-container'),
+    
+    html.Div('Predicted Threat Type', className='overview-title'),
+     
 ])
-
-# Function to update the graph
-def update_graph(n_intervals):
-    # Generate timestamps for each interval within the window, 1 day ahead
-    now = datetime.now() + timedelta(days=1)
-    times = [now - timedelta(seconds=i) for i in range(WINDOW_SIZE)][::-1]
-
-    # Generate random values for the line
-    values = [random.uniform(14300, 27934) for _ in range(WINDOW_SIZE)]
-    trace = go.Scatter(
-        x=times,
-        y=values,
-        mode='lines+markers',
-        line=dict(color='orange'),  # Set the line color to orange
-        name='Orange Line'
-    )
-
-    return {'data': [trace], 'layout': go.Layout(
-        xaxis=dict(title='Time', range=[min(times), max(times)]),
-        yaxis=dict(range=[14300, 27934], title='Value'),
-        title='Predictive Real Time Data Streaming'
-    )}
-
-# Function to register callbacks
-def register_callbacks(app):
-    @app.callback(
-        Output('live-update-graph-predictive', 'figure'),
-        [Input('interval-component-predictive', 'n_intervals')]
-    )
-    def update_output(n_intervals):
-        return update_graph(n_intervals)
