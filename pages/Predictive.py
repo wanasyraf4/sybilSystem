@@ -2,6 +2,7 @@ import plotly.express as px
 import numpy as np
 from dash import html
 from dash import  Dash, html, dcc, Input, Output, callback
+import plotly.graph_objects as go
 
 # Convert to numeric for sorting
 val2 = np.array([0.05, 0.03, 0.09, 0.04, 0.08, 0.07, 0.01, 0.02, 0.04, 0.06, 0.034])
@@ -46,6 +47,23 @@ figPredBar.update_layout(
         )
     )
 )
+
+
+####
+fraud_types = [
+    "Phishing attacks", "Account Takeover Fraud", "Chargeback Fraud",
+    "Merchant Identity Fraud", "Triangulation Fraud"
+]
+dates = ['2024-11-02', '2024-11-24', '2024-07-08', '2024-10-17', '2025-01-27']
+figFraud = go.Figure(data=[go.Table(
+    header=dict(values=["Fraud Type", "Predicted Date"]),
+    cells=dict(values=[fraud_types, dates]))
+])
+figFraud.update_layout(
+    paper_bgcolor='#121212',
+    plot_bgcolor='#121212',
+)
+
 # DataHub page layout
 layout = html.Div([
     html.H3('Predictive Analysis'),
@@ -55,5 +73,8 @@ layout = html.Div([
     ], className='PredBar-container'),
     
     html.Div('Predicted Threat Type', className='overview-title'),
-     
+    html.Div([
+    html.H3("Fraudulent Case Prediction"),
+    dcc.Graph(figure=figFraud)
+])
 ])

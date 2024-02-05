@@ -27,6 +27,10 @@ figTable = go.Figure(data=[go.Table(
                fill_color='lavender',
                align='left'))
 ])
+figTable.update_layout(
+    paper_bgcolor='#121212',
+    plot_bgcolor='#121212',
+)
 
 # Layout of the page
 layout = html.Div([
@@ -38,11 +42,33 @@ layout = html.Div([
         n_intervals=0
     ),
     
-    html.Div('Risk and Remediation', className='overview-title'),
+    html.Div('Current Threat', className='overview-title'),
+    html.Div([
+         # First row of cards
+         html.Div([
+             html.Div('Account Impacted', className='card-title'),
+             html.Div('15', className='card-value')
+         ], className='card'),
+         html.Div([
+             html.Div('Immediate Risk Exposure', className='card-title'),
+             html.Div('$159,637', className='card-value')
+         ], className='card'),
+         # Second row of cards
+         html.Div([
+             html.Div('Account Protected', className='card-title'),
+             html.Div('50', className='card-value')
+         ], className='card'),
+         html.Div([
+             html.Div('Total Value Protected', className='card-title'),
+             html.Div('$300,367', className='card-value')
+         ], className='card'),
+         
+     ], className='card-container'),
+    
     
     
     html.Div('Fraud Analyst Team', className='overview-title'),
-    html.H1('Fraud Analyst Team'),
+    html.H3('Fraud Analyst Team'),
     dcc.Graph(figure=figTable)
 
 

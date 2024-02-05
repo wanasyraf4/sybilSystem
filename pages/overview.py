@@ -16,7 +16,7 @@ from datetime import datetime, timedelta
 
 # Function to update the graph
 def update_graph(n_intervals):
-    now = datetime.now() + timedelta(hours=8)
+    now = datetime.now() + timedelta(hours=16)
 
     # Append new time and value
     x_values.append(now)
@@ -157,11 +157,35 @@ figDonut = px.pie(
     names=case,
     values=case_num,
     hole=0.3,  # Adjust the size of the hole to turn the pie chart into a donut chart
-    title="Case Distribution"
+    title="Fraude Case Distribution"
 )
 
 figDonut.update_traces(textinfo='percent+label')  # Display percentage and label on the chart
 figDonut.update_layout(
+    paper_bgcolor='#121212',  # Background color of the outer area of the figure
+    plot_bgcolor='#121212',  # Background color of the plotting area
+    font_color='white'  # Update the font color for better contrast with the dark background
+)
+
+
+###donut2
+
+# Data for the donut chart
+labelsD = ['Phishing attacks', 'Account Takeover Fraud', 'Chargeback Fraud', 'Merchant Identity Fraud', 'Triangulation Fraud']
+valuesD = [0.02, 0.08, 0.1, 0.6, 0.2]  # Converted string percentages to float for plotting
+
+# Create the donut chart
+figDonut2 = go.Figure(data=[go.Pie(labels=labelsD, values=valuesD, hole=0.5)])
+
+# Update the layout and add title
+figDonut2.update_layout(
+    title_text='Fraud Type Distribution',
+    # Change the background color and font colors if needed
+    plot_bgcolor='white',
+    paper_bgcolor='white',
+    font_color='black'
+)
+figDonut2.update_layout(
     paper_bgcolor='#121212',  # Background color of the outer area of the figure
     plot_bgcolor='#121212',  # Background color of the plotting area
     font_color='white'  # Update the font color for better contrast with the dark background
@@ -268,9 +292,17 @@ layout = html.Div([
     html.Div(style={'height': '150px'}), 
     
     html.Div('Fraudulent Case Breakdown', className='overview-title'),
-    html.Div([  # Bar container
-        dcc.Graph(figure=figDonut)
-    ], className='Donut-container'),
+    html.Div([
+        # Container for the first donut chart
+        html.Div([
+            dcc.Graph(figure=figDonut)
+        ], className='Donut-container', style={'display': 'inline-block', 'width': '50%'}),
+        
+        # Container for the second donut chart
+        html.Div([
+            dcc.Graph(figure=figDonut2)
+        ], className='Donut-container', style={'display': 'inline-block', 'width': '50%'}),
+    ], style={'display': 'flex', 'justify-content': 'center'}),
     
     ##
     
