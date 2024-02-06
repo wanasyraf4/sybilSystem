@@ -77,7 +77,7 @@ layout = html.Div([
 # Function to update the graph
 def update_graph(n_intervals):
     # Generate timestamps for each interval within the window
-    now = datetime.now() + timedelta(hours=16)
+    now = datetime.now() + timedelta(hours=8)
     times = [now - timedelta(seconds=i) for i in range(WINDOW_SIZE)][::-1]
 
     # Generate random values within a smaller range for less fluctuation
